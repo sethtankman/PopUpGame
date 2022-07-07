@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GridSquare.h"
+
+//This MUST ALWAYS BE LAST
 #include "BP_Board.generated.h"
 
 UCLASS()
@@ -14,6 +17,9 @@ class POPUPGAME_API ABP_Board : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABP_Board();
+
+	UPROPERTY(EditAnywhere)
+	TArray<AGridSquare*> squares;
 
 protected:
 	// Called when the game starts or when spawned
