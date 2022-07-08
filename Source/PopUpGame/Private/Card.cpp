@@ -12,6 +12,11 @@ ACard::ACard()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = MeshComp;
+
+	Highlight = CreateDefaultSubobject<UMaterial>(TEXT("Highlight Material"));
+	RegularMaterial = CreateDefaultSubobject<UMaterial>(TEXT("Regular Material"));
+
+	MeshComp->OnBeginCursorOver.AddDynamic(this, &ACard::CustomOnBeginMouseOver);
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +24,7 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	MeshComp->SetMaterial(0, RegularMaterial);
 }
 
 // Called every frame
@@ -35,3 +41,6 @@ void ACard::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ACard::CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent) {
+	MeshComp->SetMaterial(0, Highlight);
+}
