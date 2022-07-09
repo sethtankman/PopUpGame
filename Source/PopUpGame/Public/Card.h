@@ -31,6 +31,9 @@ protected:
 	UFUNCTION()
 	void CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent);
 
+	UFUNCTION()
+		void CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
