@@ -29,6 +29,14 @@ void AGridSquare::BeginPlay()
 void AGridSquare::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (activeCntr > 0) {
+		MeshComp->SetMaterial(0, Highlight);
+		activeCntr--;
+	}
+	else if (activeCntr > -5) {
+		MeshComp->SetMaterial(0, RegularMaterial);
+		activeCntr--;
+	}
 
 }
 
@@ -40,5 +48,19 @@ void AGridSquare::CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent)
 
 void AGridSquare::CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent) {
 	MeshComp->SetMaterial(0, RegularMaterial);
+}
+
+void AGridSquare::CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed) {
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		APlayerController* PlayerController = Iterator->Get();
+		if (auto pc = Cast<APGPlayerController>(PlayerController))
+		{
+			if (pc->selectedDeck != nullptr) {
+				ACard *card = Cast<ACard>(pc->selectedDeck);
+				card->MeshComp->SetWorldLocation(pc->selectedDeck->GetActorLocation());
+			}
+		}
+	}
 }
 

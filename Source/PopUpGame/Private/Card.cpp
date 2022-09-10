@@ -18,6 +18,8 @@ ACard::ACard()
 
 	MeshComp->OnBeginCursorOver.AddDynamic(this, &ACard::CustomOnBeginMouseOver);
 	MeshComp->OnEndCursorOver.AddDynamic(this, &ACard::CustomOnEndMouseOver);
+	MeshComp->OnClicked.AddDynamic(this, &ACard::CustomOnClicked);
+	MeshComp->OnReleased.AddDynamic(this, &ACard::CustomReleased);
 }
 
 // Called when the game starts or when spawned
@@ -26,13 +28,22 @@ void ACard::BeginPlay()
 	Super::BeginPlay();
 	
 	MeshComp->SetMaterial(0, RegularMaterial);
+	GameBoardPlane = FVector(0, 0, 0);
+	GameBoardNormal = FVector(0, 0, 1);
 }
 
 // Called every frame
 void ACard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	/*if (beingDragged) {
+		// WorldLocation = GetActorLocation();
+		// FVector WorldDirection = GetActorForwardVector();
+		float mouseX;
+		float mouseY;
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouseX, mouseY);
+		MeshComp->SetWorldLocation(FVector::PointPlaneProject(FVector(-mouseX + 700, -mouseY + 500, 0), GameBoardPlane, GameBoardNormal));
+	} */
 }
 
 // Called to bind functionality to input
@@ -49,5 +60,23 @@ void ACard::CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent)
 }
 
 void ACard::CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent) {
-	MeshComp->SetMaterial(0, RegularMaterial);
+	if (selected == false)
+		MeshComp->SetMaterial(0, RegularMaterial);
+}
+
+void ACard::CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed) {
+	//Convertmouselocationtoworldspace
+	selected = true;
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		APlayerController* PlayerController = Iterator->Get();
+		if (auto pc = Cast<APGPlayerController>(PlayerController))
+		{
+			pc->selectedDeck = this;
+		}
+	}
+}
+
+void ACard::CustomReleased(UPrimitiveComponent* TouchedComponent, FKey ButtonReleased) {
+	//selected = false;
 }

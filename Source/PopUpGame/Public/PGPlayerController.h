@@ -17,4 +17,7 @@ class POPUPGAME_API APGPlayerController : public APlayerController
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	APawn * selectedDeck = nullptr;
 };

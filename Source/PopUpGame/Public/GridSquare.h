@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PGPlayerController.h"
+#include "Card.h"
 #include "GridSquare.generated.h"
 
 UCLASS()
@@ -34,7 +36,12 @@ protected:
 	UFUNCTION()
 		void CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent);
 
+	UFUNCTION()
+		void CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	int activeCntr = 0;
 };

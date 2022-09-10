@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
+#include "PGPlayerController.h"
 #include "Card.generated.h"
 
 UCLASS()
@@ -19,9 +22,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
-
 	UPROPERTY(EditAnywhere)
 	UMaterial* Highlight;
 
@@ -34,6 +34,12 @@ protected:
 	UFUNCTION()
 		void CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent);
 
+	UFUNCTION()
+		void CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed);
+
+	UFUNCTION()
+		void CustomReleased(UPrimitiveComponent* TouchedComponent, FKey ButtonReleased);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,4 +47,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent* MeshComp;
+
+private:
+	bool selected = false;
+	FVector GameBoardPlane;
+	FVector GameBoardNormal;
 };
