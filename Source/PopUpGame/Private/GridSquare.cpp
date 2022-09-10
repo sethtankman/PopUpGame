@@ -16,6 +16,7 @@ AGridSquare::AGridSquare()
 
 	MeshComp->OnBeginCursorOver.AddDynamic(this, &AGridSquare::CustomOnBeginMouseOver);
 	MeshComp->OnEndCursorOver.AddDynamic(this, &AGridSquare::CustomOnEndMouseOver);
+	MeshComp->OnClicked.AddDynamic(this, &AGridSquare::CustomOnClicked);
 }
 
 // Called when the game starts or when spawned
@@ -51,15 +52,15 @@ void AGridSquare::CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent) {
 }
 
 void AGridSquare::CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed) {
+
+	UE_LOG(LogTemp, Warning, TEXT("Your message1"));
 	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
 		APlayerController* PlayerController = Iterator->Get();
 		if (auto pc = Cast<APGPlayerController>(PlayerController))
 		{
-			if (pc->selectedDeck != nullptr) {
-				ACard *card = Cast<ACard>(pc->selectedDeck);
-				card->MeshComp->SetWorldLocation(pc->selectedDeck->GetActorLocation());
-			}
+			UE_LOG(LogTemp, Warning, TEXT("Your message"));
+			pc->selectedSquare = MeshComp->GetComponentLocation();
 		}
 	}
 }

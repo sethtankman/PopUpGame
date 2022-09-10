@@ -20,6 +20,8 @@ ACard::ACard()
 	MeshComp->OnEndCursorOver.AddDynamic(this, &ACard::CustomOnEndMouseOver);
 	MeshComp->OnClicked.AddDynamic(this, &ACard::CustomOnClicked);
 	MeshComp->OnReleased.AddDynamic(this, &ACard::CustomReleased);
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +46,21 @@ void ACard::Tick(float DeltaTime)
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouseX, mouseY);
 		MeshComp->SetWorldLocation(FVector::PointPlaneProject(FVector(-mouseX + 700, -mouseY + 500, 0), GameBoardPlane, GameBoardNormal));
 	} */
+	if (selected) {
+		for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+		{
+			APlayerController* PlayerController = Iterator->Get();
+			if (APGPlayerController* pc = Cast<APGPlayerController>(PlayerController))
+			{
+				if (pc->selectedSquare.IsNearlyZero(0.001f) == false) {
+					MeshComp->SetWorldLocation(pc->selectedSquare);
+					selected = false;
+					MeshComp->SetMaterial(0, RegularMaterial);
+					pc->selectedSquare = FVector(0, 0, 0);
+				}
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -66,15 +83,8 @@ void ACard::CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent) {
 
 void ACard::CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed) {
 	//Convertmouselocationtoworldspace
-	selected = true;
-	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
-	{
-		APlayerController* PlayerController = Iterator->Get();
-		if (auto pc = Cast<APGPlayerController>(PlayerController))
-		{
-			pc->selectedDeck = this;
-		}
-	}
+	selected = !selected;
+	UE_LOG(LogTemp, Warning, TEXT("Your message"));
 }
 
 void ACard::CustomReleased(UPrimitiveComponent* TouchedComponent, FKey ButtonReleased) {

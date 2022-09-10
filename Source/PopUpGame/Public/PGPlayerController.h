@@ -19,5 +19,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	APawn * selectedDeck = nullptr;
+	FVector selectedSquare = FVector(0,0,0);
+
 };

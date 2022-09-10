@@ -54,4 +54,5 @@ private:
 	bool selected = false;
 	FVector GameBoardPlane;
 	FVector GameBoardNormal;
+	
 };
