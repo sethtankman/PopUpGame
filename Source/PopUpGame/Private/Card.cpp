@@ -30,7 +30,7 @@ void ACard::BeginPlay()
 	Super::BeginPlay();
 	
 	MeshComp->SetMaterial(0, RegularMaterial);
-	GameBoardPlane = FVector(0, 0, 0);
+	GameBoardPlane = FVector(0, 0, 1);
 	GameBoardNormal = FVector(0, 0, 1);
 }
 
