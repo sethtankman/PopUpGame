@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GridSquare.h"
 
 //This MUST ALWAYS BE LAST
 #include "BP_Board.generated.h"
+
+class AGridSquare;
 
 UCLASS()
 class POPUPGAME_API ABP_Board : public AActor

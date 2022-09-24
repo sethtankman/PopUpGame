@@ -25,10 +25,16 @@ protected:
 	UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(EditAnywhere)
+		UMaterial* Moveable;
+
+	UPROPERTY(EditAnywhere)
 		UMaterial* Highlight;
 
 	UPROPERTY(EditAnywhere)
 		UMaterial* RegularMaterial;
+
+	UPROPERTY(EditAnywhere)
+	FIntPoint coordinates;
 
 	UFUNCTION()
 		void CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent);

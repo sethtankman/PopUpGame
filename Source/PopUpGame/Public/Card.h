@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "PGPlayerController.h"
+#include "BP_Board.h"
 #include "Card.generated.h"
 
 UCLASS()
@@ -27,6 +28,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 		UMaterial* RegularMaterial;
+
+	UPROPERTY(EditAnywhere)
+		int energy;
+
+	UPROPERTY(EditAnywhere)
+	FIntPoint coordinates;
 
 	UFUNCTION()
 	void CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent);
@@ -50,9 +57,11 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* MeshComp;
 
+	FIntPoint startPoint;
+
 private:
 	bool selected = false;
 	FVector GameBoardPlane;
 	FVector GameBoardNormal;
-	
+	ABP_Board *GameBoard;
 };

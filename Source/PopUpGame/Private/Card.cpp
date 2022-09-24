@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Runtime/Engine/Classes/Engine/World.h"
 #include "Card.h"
 
 // Sets default values
@@ -21,7 +21,10 @@ ACard::ACard()
 	MeshComp->OnClicked.AddDynamic(this, &ACard::CustomOnClicked);
 	MeshComp->OnReleased.AddDynamic(this, &ACard::CustomReleased);
 
-	
+	// When we have more cards, make a database or something to fetch data from.
+	energy = 2;
+	startPoint = FIntPoint(4, 1);
+	coordinates = startPoint;
 }
 
 // Called when the game starts or when spawned
@@ -29,6 +32,17 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	TArray<AActor*> foundActors;
+	UGameplayStatics::GetAllActorsOfClass(this, ABP_Board::StaticClass(), foundActors);
+	if (foundActors.Num() > 0)
+	{
+		GameBoard = (ABP_Board*)foundActors[0];
+		UE_LOG(LogTemp, Warning, TEXT("GameBoard found!"));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("GameBoard Not found!"));
+	}
+
 	MeshComp->SetMaterial(0, RegularMaterial);
 	GameBoardPlane = FVector(0, 0, 1);
 	GameBoardNormal = FVector(0, 0, 1);
@@ -84,6 +98,10 @@ void ACard::CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent) {
 void ACard::CustomOnClicked(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed) {
 	//Convertmouselocationtoworldspace
 	selected = !selected;
+	if (selected)
+	{
+
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Your message"));
 }
 
