@@ -68,6 +68,7 @@ void ACard::Tick(float DeltaTime)
 			{
 				if (pc->selectedSquare.IsNearlyZero(0.001f) == false) {
 					MeshComp->SetWorldLocation(pc->selectedSquare);
+					MeshComp->SetWorldRotation(FRotator(180,0,180));
 					selected = false;
 					MeshComp->SetMaterial(0, RegularMaterial);
 					pc->selectedSquare = FVector(0, 0, 0);
